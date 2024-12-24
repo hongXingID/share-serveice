@@ -34,14 +34,19 @@ export class WechatyService {
         });
       });
       bot.start();
-      console.log(botId,'botId')
+      console.log(botId, 'botId')
     });
   }
 
-  async exec({ botId, code }: ExecWechatyCodeDto) {
+  async exec({ botId, codes }: ExecWechatyCodeDto) {
     const bot = wechatyInstances[botId];
+    let result;
     try {
-      const result = await new Function(code)(bot);
+      for (let i = 0; i < codes.length; i++) {
+        result = await new Function(codes[0])(i === 0 ? bot : result);
+      }
+
+      bot.Contact.findAll()
       return toObject(result);
     } catch (error) {
       return error

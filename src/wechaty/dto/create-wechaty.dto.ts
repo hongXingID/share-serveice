@@ -4,7 +4,7 @@ export class CreateWechatyDto {
 
 export class ExecWechatyCodeDto {
   botId: string;
-  code: string;
+  codes: string[];
 }
 
 export class RemoveWechatyInstanceDto {
