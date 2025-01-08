@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './user/users.module';
+import { DtkModule } from './dtk/dtk.module';
 import { SubscriptionTagModule } from './subscription_tag/subscription_tag.module';
+import { UsersModule } from './user/users.module';
 import { WechatyModule } from './wechaty/wechaty.module';
+import { FileManagerModule } from './file-manager/file-manager.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { WechatyModule } from './wechaty/wechaty.module';
     UsersModule,
     SubscriptionTagModule,
     WechatyModule,
+    DtkModule,
+    FileManagerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
