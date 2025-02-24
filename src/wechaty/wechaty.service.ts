@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { toObject } from 'src/shard/utils/wechaty';
+import { Message, ScanStatus, WechatyBuilder } from 'wechaty';
 import {
   CreateWechatyDto,
   ExecWechatyCodeDto,
   RemoveWechatyInstanceDto,
 } from './dto/create-wechaty.dto';
 import { UpdateWechatyDto } from './dto/update-wechaty.dto';
-import { ScanStatus, WechatyBuilder } from 'wechaty';
-import { toObject } from 'src/shard/utils/wechaty';
-
 
 const wechatyInstances: { [key: string]: ReturnType<WechatyBuilder['build']> } =
   {};
@@ -34,7 +33,7 @@ export class WechatyService {
         });
       });
       bot.start();
-      console.log(botId, 'botId')
+      console.log(botId, 'botId');
     });
   }
 
@@ -46,11 +45,50 @@ export class WechatyService {
         result = await new Function(codes[0])(i === 0 ? bot : result);
       }
 
-      bot.Contact.findAll()
+      bot.Contact.findAll();
       return toObject(result);
     } catch (error) {
-      return error
+      return error;
     }
+  }
+
+  /**
+   * 专属监听
+   */
+  async listen() {
+    const bot = WechatyBuilder.build({
+      name: 'ax',
+    });
+    const botId = bot.id;
+    wechatyInstances[botId] = bot;
+
+    bot.on('scan', (qrcode) => {
+      const loginUrl =
+        'https://wechaty.js.org/qrcode/' + encodeURIComponent(qrcode);
+      console.log(loginUrl);
+    });
+    bot.start();
+    bot.on('message', async (message: Message) => {
+      const room = message.room();
+      const text = message.text();
+      const targetRooms = ['测试群'];
+ 
+
+      if (room && text ) {
+        // const sender = message.talker();
+        console.log(
+          text,
+          room?.payload?.topic
+        );
+
+        try {
+          const targetUser = await bot.Contact.find({ name: 'Eric' });
+          await targetUser.say(text);
+        } catch (error) {
+          console.error(`Error forwarding message: ${error}`);
+        }
+      }
+    });
   }
 
   findAll() {

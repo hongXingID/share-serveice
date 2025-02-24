@@ -1,15 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { WechatyService } from './wechaty.service';
 import { CreateWechatyDto, ExecWechatyCodeDto } from './dto/create-wechaty.dto';
 import { UpdateWechatyDto } from './dto/update-wechaty.dto';
+import { WechatyService } from './wechaty.service';
 
 @Controller('wechaty')
 export class WechatyController {
@@ -17,15 +17,20 @@ export class WechatyController {
 
   @Post('create')
   async create(@Body() createWechatyDto: CreateWechatyDto) {
-    console.log(createWechatyDto, 'create');
     const result = await this.wechatyService.create(createWechatyDto);
-   
+
     return result;
   }
 
   @Post('exec')
   async exec(@Body() execWechatyCodeDto: ExecWechatyCodeDto) {
     return await this.wechatyService.exec(execWechatyCodeDto);
+  }
+
+  @Post('listen')
+  async listen() {
+      this.wechatyService.listen();
+      return true
   }
 
   @Get()

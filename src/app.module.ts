@@ -7,6 +7,7 @@ import { SubscriptionTagModule } from './subscription_tag/subscription_tag.modul
 import { UsersModule } from './user/users.module';
 import { WechatyModule } from './wechaty/wechaty.module';
 import { FileManagerModule } from './file-manager/file-manager.module';
+import { AiChatModule } from './ai-chat/ai-chat.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { FileManagerModule } from './file-manager/file-manager.module';
     WechatyModule,
     DtkModule,
     FileManagerModule,
+    AiChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
